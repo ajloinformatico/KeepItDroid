@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">KeepItDroid</string>
+    <string name="app_name_normalized">Keep it Droid</string>
+    <string name="welcome_back">Welcome back</string>
+    <string name="login_to_continue">Login to continue</string>
+    <string name="your_email">Your email</string>
+    <string name="log_in">Log in</string>
+    <string name="forget_password">Forgot password</string>
+    <string name="create_new_user">Create new user</string>
+    <string name="your_password">Your password</string>
+    <string name="register_your_new_user">Register your new user</string>
+    <string name="back_to_login">Back to login</string>
+    <string name="click_here_to_recover">Click here to recover</string>
+    <string name="recover_your_password">Recover your password</string>
+    <string name="add_new_note">Add new note</string>
+    <string name="log_out">log out</string>
+    <string name="this_is_the_content_of_the_note">this is the content of the note.</string>
+    <string name="enter_your_note_title">Enter your note title</string>
+    <string name="enter_your_text_here">Enter your text here</string>
+    <string name="blue">blue</string>
+    <string name="select_one_color">Select one color</string>
+    <string name="red">red</string>
+    <string name="yellow">yellow</string>
+    <string name="orange">orange</string>
+    <string name="black">black</string>
+    <string name="green">green</string>
+    <string name="white">white</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+  <string name="opciones_de_la_nota">Opciones de la nota</string>
+  <dimen name="sp20">20sp</dimen>
+</resources>

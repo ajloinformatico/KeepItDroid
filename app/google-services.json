@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1027842304931",
+    "project_id": "keepitdroid",
+    "storage_bucket": "keepitdroid.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1027842304931:android:38c719bcf62d5dffab8816",
+        "android_client_info": {
+          "package_name": "es.infolojo.keepitdroid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1027842304931-90ggsglqv07bmo1f35krk7qn7j0q0e87.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPKOXuDTSyxwdr-Vsosr9z2kpc4RbBdz0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1027842304931-90ggsglqv07bmo1f35krk7qn7j0q0e87.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

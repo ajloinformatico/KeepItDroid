@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:background="@color/background"
+  android:padding="@dimen/dp8">
+
+  <androidx.cardview.widget.CardView
+    android:id="@+id/card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/background"
+    android:elevation="@dimen/dp5"
+    android:padding="@dimen/dp8"
+    app:cardCornerRadius="@dimen/d25"
+    app:cardMaxElevation="@dimen/dp5"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <LinearLayout
+      android:id="@+id/note"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical">
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+          android:id="@+id/noteTitle"
+          style="@style/NoteTitle"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_margin="@dimen/dp10"
+          android:layout_weight="1"
+          tools:text="Example title" />
+
+        <ImageView
+          android:id="@+id/menuPopButton"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_margin="@dimen/dp10"
+          android:layout_weight="0"
+          android:contentDescription="@string/opciones_de_la_nota"
+          android:src="@drawable/ic_baseline_more_vert_24" />
+
+      </LinearLayout>
+
+      <TextView
+        android:id="@+id/noteContent"
+        style="@style/NoteContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp10"
+        android:layout_marginTop="@dimen/dp20"
+        android:text="@string/this_is_the_content_of_the_note" />
+    </LinearLayout>
+  </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>
