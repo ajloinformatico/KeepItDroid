@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".activities.CreateNoteActivity">
+    tools:context=".ui.activities.CreateNoteActivity">
 
     <item
         android:id="@+id/color_note"

@@ -1,4 +1,4 @@
-package es.infolojo.keepitdroid.activities
+package es.infolojo.keepitdroid.ui.activities
 
 import android.content.Intent
 import android.os.Bundle

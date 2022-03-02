@@ -6,7 +6,7 @@
     android:background="@color/background"
     android:padding="@dimen/dp8"
     android:layout_height="match_parent"
-    tools:context=".activities.CreateNoteActivity">
+    tools:context=".ui.activities.CreateNoteActivity">
 
 
     <View

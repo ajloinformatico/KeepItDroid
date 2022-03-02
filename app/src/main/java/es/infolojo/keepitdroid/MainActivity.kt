@@ -8,9 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import es.infolojo.keepitdroid.activities.ForgotPasswordActivity
-import es.infolojo.keepitdroid.activities.NotesActivity
-import es.infolojo.keepitdroid.activities.SignInActivity
+import es.infolojo.keepitdroid.ui.activities.ForgotPasswordActivity
+import es.infolojo.keepitdroid.ui.activities.NotesActivity
+import es.infolojo.keepitdroid.ui.activities.SignInActivity
 import es.infolojo.keepitdroid.databinding.ActivityMainBinding
 import es.infolojo.keepitdroid.ui.viewmodels.LoginViewModel
 import es.infolojo.keepitdroid.utils.USER_EMAIL
