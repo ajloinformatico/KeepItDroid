@@ -42,6 +42,7 @@ class NotesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityNotesBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        configureToolbar()
         initFireBase()
         initViews()
     }
@@ -71,6 +72,11 @@ class NotesActivity : AppCompatActivity() {
             }
             else -> false
         }
+    }
+
+    private fun configureToolbar() {
+        supportActionBar?.subtitle = "infolojo.es"
+        supportActionBar?.title = this.getString(R.string.app_name)
     }
 
 
@@ -141,8 +147,22 @@ class NotesActivity : AppCompatActivity() {
             }
 
             is NotesListener.DetailAction -> {
-                //TODO: CREATE DETAIL ACTIVITY
-                showMessage(this, "Go to detail", Toast.LENGTH_SHORT)
+                val id = noteAdapter?.snapshots?.getSnapshot(actions.position)?.id
+
+                if (id != null) {
+                    this.finish()
+                    startActivity(
+                        Intent(this, DetailNoteActivity::class.java).apply {
+                            this.putExtra(NOTE_TITLE, actions.item.title)
+                            this.putExtra(NOTE_BODY, actions.item.content)
+                            this.putExtra(NOTE_COLOR, actions.item.color.value)
+                            this.putExtra(NOTE_KEY, id)
+                        }
+                    )
+
+                } else {
+                    showError(this, binding.root, "Something was wrong. Please try again", Snackbar.LENGTH_LONG)
+                }
             }
         }
     }

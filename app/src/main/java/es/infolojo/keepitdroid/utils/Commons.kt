@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
 import es.infolojo.keepitdroid.MainActivity
 import es.infolojo.keepitdroid.R
+import es.infolojo.keepitdroid.ui.activities.NotesActivity
 
 
 fun showMessage(context: Context, text: String, timeDuration: Int) =
@@ -25,6 +26,11 @@ fun showError(context: Context, view: View, text: String, timeDuration: Int) =
 fun backLogin(activity: Activity) {
     activity.finish()
     activity.startActivity(Intent(activity, MainActivity::class.java))
+}
+
+fun backToNotesActivity(activity: Activity) {
+    activity.finish()
+    activity.startActivity(Intent(activity, NotesActivity::class.java))
 }
 
 fun hideVirtualKeyBoard(activity: AppCompatActivity, editText: EditText) {

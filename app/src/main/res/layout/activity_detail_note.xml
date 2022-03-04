@@ -3,7 +3,49 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
+  android:background="@color/background"
   android:layout_height="match_parent"
   tools:context=".ui.activities.DetailNoteActivity">
 
+
+
+    <TextView
+      android:id="@+id/title_note"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginHorizontal="@dimen/dp8"
+      android:padding="@dimen/dp8"
+      android:textStyle="bold"
+      android:paddingTop="@dimen/sp12"
+      android:textSize="@dimen/sp24"
+      android:textColor="@color/black"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:text="@string/enter_your_note_title"
+      />
+
+
+  <TextView
+    android:id="@+id/body_note"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp0"
+    android:layout_marginHorizontal="@dimen/dp8"
+    android:textSize="@dimen/sp20"
+    android:padding="@dimen/dp8"
+    android:textColor="@color/black"
+    android:hint="@string/enter_your_text_here"
+    android:gravity="top|start"
+    app:layout_constraintTop_toBottomOf="@id/title_note"
+    app:layout_constraintBottom_toTopOf="@id/edit_button"
+    tools:text="Cuerpo de la nota"
+     />
+
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/edit_button"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/dp12"
+    android:src="@drawable/ic_baseline_edit_24"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:contentDescription="@string/add_new_note" />
 </androidx.constraintlayout.widget.ConstraintLayout>

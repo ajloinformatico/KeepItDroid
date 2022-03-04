@@ -95,10 +95,11 @@ class FireStoreRecyclerNotesAdapter(
                 popupMenu.setOnMenuItemClickListener { menuItem ->
                     when (menuItem.itemId) {
                         R.id.edit -> {
-                            showMessage(itemView.context, "Editas aquí la nota", Toast.LENGTH_SHORT)
-                            NotesListener.DetailAction(
-                                item,
-                                notePosition
+                            listener(
+                                NotesListener.DetailAction(
+                                    item,
+                                    notePosition
+                                )
                             )
                         }
 

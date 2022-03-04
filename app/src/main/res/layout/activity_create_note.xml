@@ -13,7 +13,6 @@
         android:id="@+id/center"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp1"
-        android:layout_marginBottom="@dimen/dp100"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
@@ -29,8 +28,9 @@
             android:id="@+id/title_note"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:textStyle="bold"
             android:paddingTop="@dimen/sp12"
-            android:textSize="@dimen/dp24"
+            android:textSize="@dimen/sp24"
             android:textColor="@color/black"
             android:hint="@string/enter_your_note_title"
         />
@@ -42,7 +42,8 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp0"
         android:textSize="@dimen/sp20"
-        android:padding="@dimen/dp8"
+        android:paddingHorizontal="@dimen/dp16"
+        android:paddingVertical="@dimen/dp8"
         android:layout_marginTop="@dimen/dp15"
         android:textColor="@color/black"
         android:hint="@string/enter_your_text_here"
