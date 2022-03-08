@@ -67,4 +67,18 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="editTextBackGround">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textColorHint">@color/gery_hint</item>
+    </style>
+
+    <style name="fBA">
+        <item name="android:background">@color/purple_500</item>
+        <item name="android:backgroundTint">@color/purple_500</item>
+    </style>
+
+    <style name="createNoteToolbar" parent="Theme.KeepItDroid">
+        <item name="android:textColorSecondary">@color/gery_hint</item>
+    </style>
+
 </resources>

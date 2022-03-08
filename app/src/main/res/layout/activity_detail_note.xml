@@ -35,7 +35,7 @@
     android:hint="@string/enter_your_text_here"
     android:gravity="top|start"
     app:layout_constraintTop_toBottomOf="@id/title_note"
-    app:layout_constraintBottom_toTopOf="@id/edit_button"
+    app:layout_constraintBottom_toBottomOf="parent"
     tools:text="Cuerpo de la nota"
      />
 
@@ -44,6 +44,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/dp12"
+    style="@style/fBA"
     android:src="@drawable/ic_baseline_edit_24"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"

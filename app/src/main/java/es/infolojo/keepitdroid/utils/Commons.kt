@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
 import es.infolojo.keepitdroid.MainActivity
 import es.infolojo.keepitdroid.R
+import es.infolojo.keepitdroid.data.FireBaseModel
 import es.infolojo.keepitdroid.ui.activities.NotesActivity
 
 

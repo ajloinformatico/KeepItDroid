@@ -19,7 +19,8 @@
       android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
     <activity
       android:name=".ui.activities.NotesActivity"
-      android:exported="false" />
+      android:exported="false"
+      android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
     <activity
       android:name=".ui.activities.ForgotPasswordActivity"
       android:exported="false" />

@@ -1,6 +1,7 @@
 package es.infolojo.keepitdroid.ui.activities
 
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -57,7 +58,6 @@ class NotesActivity : AppCompatActivity() {
         noteAdapter?.startListening()
     }
 
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.notes_menu, menu)
         return true
@@ -75,8 +75,13 @@ class NotesActivity : AppCompatActivity() {
     }
 
     private fun configureToolbar() {
-        supportActionBar?.subtitle = "infolojo.es"
-        supportActionBar?.title = this.getString(R.string.app_name)
+        val toolbarTextColor = getAnyColor(this, R.color.white_note)
+        setSupportActionBar(binding.activityNoteToolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        binding.activityNoteToolbar.setTitle(R.string.app_name_normalized)
+        binding.activityNoteToolbar.setSubtitle(R.string.toolbar_subtitle)
+        binding.activityNoteToolbar.setTitleTextColor(toolbarTextColor)
+        binding.activityNoteToolbar.setSubtitleTextColor(toolbarTextColor)
     }
 
 

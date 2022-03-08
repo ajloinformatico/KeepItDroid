@@ -21,7 +21,6 @@ class DetailNoteActivity : AppCompatActivity() {
     private var noteContent: FireBaseModel? = null
     private var id: String? = null
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailNoteBinding.inflate(layoutInflater)
@@ -57,15 +56,18 @@ class DetailNoteActivity : AppCompatActivity() {
         noteContent?.color?.let { noteColor ->
             if (noteColor != FireBaseColors.UNKNOWN) {
                 val textColor =
-                    if (noteColor == FireBaseColors.BLACK_NOTE || noteColor == FireBaseColors.RED_NOTE) {
-                        R.color.white
-                    } else {
-                        R.color.black
-                    }
+                    getAnyColor(
+                        this,
+                        if (noteColor == FireBaseColors.BLACK_NOTE || noteColor == FireBaseColors.RED_NOTE) {
+                            R.color.white
+                        } else {
+                            R.color.black
+                        }
+                    )
 
-                binding.root.setBackgroundColor(noteColor.toIntColor())
-                binding.titleNote.setTextColor(this.getColor(textColor))
-                binding.bodyNote.setTextColor(this.getColor(textColor))
+                binding.root.setBackgroundColor(getAnyColor(this, noteColor.toIntColor()))
+                binding.titleNote.setTextColor(textColor)
+                binding.bodyNote.setTextColor(textColor)
             }
         }
 
@@ -75,11 +77,12 @@ class DetailNoteActivity : AppCompatActivity() {
     }
 
     private fun goToEdit() {
+        this.finish()
         startActivity(
             Intent(this, CreateNoteActivity::class.java).apply {
                 this.putExtra(NOTE_TITLE, noteContent?.title)
                 this.putExtra(NOTE_BODY, noteContent?.content)
-                this.putExtra(NOTE_COLOR, noteContent?.color)
+                this.putExtra(NOTE_COLOR, noteContent?.color?.value)
                 this.putExtra(NOTE_KEY, id)
             }
         )

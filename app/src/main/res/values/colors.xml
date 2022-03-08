@@ -23,4 +23,5 @@
     <color name="orange_note">@color/orange_button</color>
     <color name="black_note">#717171</color>
     <color name="green_note">#C2EF8E</color>
+    <color name="gery_hint">#919191</color>
 </resources>
