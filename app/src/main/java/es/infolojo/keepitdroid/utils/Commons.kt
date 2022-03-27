@@ -13,6 +13,7 @@ import com.google.android.material.snackbar.Snackbar
 import es.infolojo.keepitdroid.MainActivity
 import es.infolojo.keepitdroid.R
 import es.infolojo.keepitdroid.data.FireBaseModel
+import es.infolojo.keepitdroid.ui.activities.CreateNoteActivity
 import es.infolojo.keepitdroid.ui.activities.NotesActivity
 
 
@@ -32,6 +33,11 @@ fun backLogin(activity: Activity) {
 fun backToNotesActivity(activity: Activity) {
     activity.finish()
     activity.startActivity(Intent(activity, NotesActivity::class.java))
+}
+
+fun goToCreateOrEditNote(activity: Activity) {
+    activity.finish()
+    activity.startActivity(Intent(activity, CreateNoteActivity::class.java))
 }
 
 fun hideVirtualKeyBoard(activity: AppCompatActivity, editText: EditText) {

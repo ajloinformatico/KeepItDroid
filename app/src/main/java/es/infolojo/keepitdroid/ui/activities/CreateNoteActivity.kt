@@ -93,7 +93,7 @@ class CreateNoteActivity : AppCompatActivity() {
 
   override fun onBackPressed() {
     super.onBackPressed()
-    startActivity(Intent(this, NotesActivity::class.java))
+    backToNotesActivity(this)
   }
 
   private fun configureNewToolbar() {
@@ -144,7 +144,8 @@ class CreateNoteActivity : AppCompatActivity() {
       hideKeyBoard()
     }
 
-    setEditNoteData()
+    val needToUpdateNote = setEditNoteData()
+
 
     binding.newButton.setOnClickListener {
       val title = binding.titleNote.text.toString()
@@ -162,29 +163,46 @@ class CreateNoteActivity : AppCompatActivity() {
                 .collection(FIRE_BASE_USER_COLLECTION)
                 .document()
 
-            documentReference.set(
-              mapOf(
-                NOTE_TITLE to title,
-                NOTE_BODY to noteBody,
-                NOTE_COLOR to viewModel.getNoteColor(),
-              )
-            ).addOnSuccessListener {
-              Timber.d(SAVE_NOTE_STATE_VO.NOTE_SAVE.data)
-              showMessage(this, SAVE_NOTE_STATE_VO.NOTE_SAVE.data, Toast.LENGTH_LONG)
-              finish()
-              startActivity(Intent(this, NotesActivity::class.java))
+            val dataToSave = mapOf(
+              NOTE_TITLE to title,
+              NOTE_BODY to noteBody,
+              NOTE_COLOR to viewModel.getNoteColor(),
+            )
 
-            }.addOnFailureListener { exception ->
-              Timber.d("Error: $exception")
-              showLastOnCreateNoteError()
+            //Create new note
+            if (needToUpdateNote.not()) {
+              documentReference.set(dataToSave).addOnSuccessListener {
+                Timber.d(SAVE_NOTE_STATE_VO.NOTE_SAVE.data)
+                showMessage(this, SAVE_NOTE_STATE_VO.NOTE_SAVE.data, Toast.LENGTH_LONG)
+                backToNotesActivity(this)
+
+              }.addOnFailureListener { exception ->
+                Timber.d("Error: $exception")
+                showLastOnCreateNoteError()
+              }
+
+            // Edit actual note
+            } else {
+              documentReference.set(dataToSave).addOnSuccessListener {
+                Timber.d(SAVE_NOTE_STATE_VO.NOTE_SAVE.data)
+                showMessage(this, NOTE_EDIT_SUCCESS, Toast.LENGTH_LONG)
+                backToNotesActivity(this)
+
+              }.addOnFailureListener { exception ->
+                Timber.d("Error: $exception")
+                showLastOnCreateNoteError()
+              }
+
+//              correct child reference.
+//              myRef.setValue("Hello, World")
+//              myRef.child("someChild").child("name").setValue(name)
+
             }
 
           } else {
             Timber.d("Error: FireBase data is null")
             showLastOnCreateNoteError()
           }
-
-
         }
 
         SAVE_NOTE_STATE_VO.TITLE_ERROR -> {
@@ -217,6 +235,10 @@ class CreateNoteActivity : AppCompatActivity() {
     }
   }
 
+  private fun createNewNote() {
+
+  }
+
   private fun getIntentContent() {
     if (noteContent == null) {
       noteContent = FireBaseModel(
@@ -231,14 +253,16 @@ class CreateNoteActivity : AppCompatActivity() {
     }
   }
 
-  private fun setEditNoteData() {
-    if (id.orEmpty().isNotEmpty() && noteContent != null) {
+  private fun setEditNoteData(): Boolean = if (id.orEmpty().isNotEmpty() && noteContent != null) {
       binding.titleNote.text.clear()
       binding.bodyNote.text.clear()
       binding.titleNote.text.append(noteContent?.title)
       binding.bodyNote.text.append(noteContent?.content)
+      true
+    } else {
+      false
     }
-  }
+
 
   private fun hideKeyBoard() {
     hideVirtualKeyBoard(this, binding.titleNote)

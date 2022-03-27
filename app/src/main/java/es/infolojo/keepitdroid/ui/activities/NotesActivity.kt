@@ -48,15 +48,22 @@ class NotesActivity : AppCompatActivity() {
         initViews()
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        this.onStop()
+    }
+
     override fun onStart() {
         super.onStart()
         noteAdapter?.startListening()
     }
 
+    /*
     override fun onStop() {
         super.onStop()
         noteAdapter?.startListening()
     }
+    */
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.notes_menu, menu)
@@ -139,7 +146,7 @@ class NotesActivity : AppCompatActivity() {
         }
 
         binding.newButton.setOnClickListener {
-            startActivity(Intent(this, CreateNoteActivity::class.java))
+            goToCreateOrEditNote(this)
         }
 
 
