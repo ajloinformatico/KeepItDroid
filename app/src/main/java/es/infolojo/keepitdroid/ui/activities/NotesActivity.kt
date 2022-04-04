@@ -180,26 +180,35 @@ class NotesActivity : AppCompatActivity() {
     }
 
     private fun deleteNote(item: FireBaseModel, position: Int) {
-        val noteId: String = noteAdapter?.snapshots?.getSnapshot(position)?.id.orEmpty()
+        if (position > noteAdapter?.snapshots.orEmpty().size) {
+            val noteId: String = noteAdapter?.snapshots?.getSnapshot(position)?.id.orEmpty()
 
-        if (noteId.isNotEmpty()) {
-           fireStore?.let { fStore ->
-               firebaseUser?.let { fUser ->
-                   val documentReference: DocumentReference = fStore.collection(
-                       FIRE_BASE_COLLECTION_NAME)
-                       .document(fUser.uid)
-                       .collection(FIRE_BASE_USER_COLLECTION)
-                       .document(noteId)
+            if (noteId.isNotEmpty()) {
+                fireStore?.let { fStore ->
+                    firebaseUser?.let { fUser ->
+                        val documentReference: DocumentReference = fStore.collection(
+                            FIRE_BASE_COLLECTION_NAME)
+                            .document(fUser.uid)
+                            .collection(FIRE_BASE_USER_COLLECTION)
+                            .document(noteId)
 
-                   documentReference.delete().addOnSuccessListener {
-                       showMessage(this, "${item.title} has been deleted", Toast.LENGTH_LONG)
+                        documentReference.delete().addOnSuccessListener {
+                            showMessage(this, "${item.title} has been deleted", Toast.LENGTH_LONG)
 
-                   }.addOnFailureListener {
-                       showError(this, binding.root, "Something was wrong, please try again", Snackbar.LENGTH_LONG)
-                       Timber.d("Something was wrong, please try again")
-                   }
-               }
-           }
+                            //Notify update to the adapter
+                            noteAdapter?.notifyItemChanged(position)
+
+                        }.addOnFailureListener {
+                            showError(this, binding.root, "Something was wrong, please try again", Snackbar.LENGTH_LONG)
+                            Timber.d("Something was wrong, please try again")
+                        }
+                    }
+                }
+            }
+
+        } else {
+            showError(this, binding.root,"Something was wrong, please try again", Snackbar.LENGTH_LONG)
+            initViews()
         }
     }
 }
