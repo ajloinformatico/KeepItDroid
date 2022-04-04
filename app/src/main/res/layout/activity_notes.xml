@@ -20,6 +20,7 @@
 
   <androidx.recyclerview.widget.RecyclerView
     android:id="@+id/recycler_notes"
+    android:background="@color/background_notes"
     android:layout_width="match_parent"
     android:layout_height="@dimen/dp0"
     android:padding="@dimen/dp8"

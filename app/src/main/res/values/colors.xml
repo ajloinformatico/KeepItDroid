@@ -14,6 +14,8 @@
     <color name="orange_button">#FCA345</color>
     <color name="yellow">#FFEB38</color>
     <color name="red">#FF0000</color>
+    <color name="transparent">#00FF0000</color>
+    <color name="background_notes">#fbca90</color>
 
     <!--Notes colors-->
     <color name="blue_note">@color/blue_button</color>

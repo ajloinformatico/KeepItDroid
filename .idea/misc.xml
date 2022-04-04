@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/all_notes_background_background.xml" value="0.1865" />
         <entry key="app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_baseline_delete_24.xml" value="0.1815" />
         <entry key="app/src/main/res/drawable/ic_baseline_edit_24.xml" value="0.1" />
@@ -14,7 +15,7 @@
         <entry key="app/src/main/res/layout/activity_detail_note.xml" value="0.18" />
         <entry key="app/src/main/res/layout/activity_forgot_password.xml" value="0.17291666666666666" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.22" />
-        <entry key="app/src/main/res/layout/activity_notes.xml" value="0.28134556574923547" />
+        <entry key="app/src/main/res/layout/activity_notes.xml" value="0.19" />
         <entry key="app/src/main/res/layout/activity_sign_in.xml" value="0.17291666666666666" />
         <entry key="app/src/main/res/layout/note_layout.xml" value="0.33" />
         <entry key="app/src/main/res/layout/pop_up_notes.xml" value="0.18659420289855072" />
@@ -23,6 +24,7 @@
         <entry key="app/src/main/res/menu/create_note_menu.xml" value="0.17291666666666666" />
         <entry key="app/src/main/res/menu/notes_menu.xml" value="0.17291666666666666" />
         <entry key="app/src/main/res/menu/row_note_menu.xml" value="0.32916666666666666" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/all_notes_background.xml" value="0.1865" />
       </map>
     </option>
   </component>

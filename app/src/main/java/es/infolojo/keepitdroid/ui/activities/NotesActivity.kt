@@ -180,7 +180,7 @@ class NotesActivity : AppCompatActivity() {
     }
 
     private fun deleteNote(item: FireBaseModel, position: Int) {
-        if (position > noteAdapter?.snapshots.orEmpty().size) {
+        if (position <= noteAdapter?.snapshots.orEmpty().size) {
             val noteId: String = noteAdapter?.snapshots?.getSnapshot(position)?.id.orEmpty()
 
             if (noteId.isNotEmpty()) {
