@@ -83,6 +83,7 @@ class FireStoreRecyclerNotesAdapter(
 
             binding.noteTitle.setTextColor(textColor)
             binding.noteContent.setTextColor(textColor)
+            binding.menuPopButton.setColorFilter(textColor)
 
             binding.cardBody.setBackgroundColor(
                 getAnyColor(

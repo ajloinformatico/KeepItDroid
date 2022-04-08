@@ -27,6 +27,7 @@ class CreateNoteActivity : AppCompatActivity() {
   private var firebaseAuth: FirebaseAuth? = null
   private var firebaseUser: FirebaseUser? = null
   private var fireBaseStore: FirebaseFirestore? = null
+  private var menuOptions: Menu? = null
 
   //EditNoteData
   private var noteContent: FireBaseModel? = null
@@ -66,15 +67,24 @@ class CreateNoteActivity : AppCompatActivity() {
 
         binding.titleNote.setTextColor(textColor)
         binding.bodyNote.setTextColor(textColor)
+
+        //Back arrow
+        binding.backBtn.setColorFilter(textColor)
+
+        //DynamicMenu
+        menuOptions?.let {
+          updateMenuDynamic(it, textColor)
+        }
       }
     }
   }
 
   override fun onCreateOptionsMenu(menu: Menu): Boolean {
-    menuInflater.inflate(R.menu.create_note_menu, menu)
+    menuOptions = menu
+    menuInflater.inflate(R.menu.create_note_menu, menuOptions)
+    updateMenuDynamic(menuOptions!!, noteContent?.color?.toIntColor()?: R.color.black)
     return true
   }
-
 
   override fun onOptionsItemSelected(item: MenuItem): Boolean {
     viewModel.setNoteColor(
@@ -86,6 +96,14 @@ class CreateNoteActivity : AppCompatActivity() {
   override fun onBackPressed() {
     super.onBackPressed()
     backToNotesActivity(this)
+  }
+
+  private fun updateMenuDynamic(menu: Menu, color: Int) {
+    menu.findItem(R.id.color_note).icon.apply {
+      this.mutate()
+      this.setTint(color)
+    }
+    onPrepareOptionsMenu(menu)
   }
 
   private fun configureNewToolbar() {
@@ -162,7 +180,7 @@ class CreateNoteActivity : AppCompatActivity() {
             )
             //Create new note
             if (needToUpdateNote.not()) {
-              createNewNote(documentReference, dataToSave, SAVE_NOTE_STATE_VO.NOTE_SAVE.data, )
+              createNewNote(documentReference, dataToSave, SAVE_NOTE_STATE_VO.NOTE_SAVE.data)
             // Edit actual note
             } else {
               deleteNote(title, dataToSave)
