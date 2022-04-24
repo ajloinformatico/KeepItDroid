@@ -3,18 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/background"
-    android:padding="@dimen/dp8"
     android:layout_height="match_parent"
+    android:background="@color/white"
+    android:padding="@dimen/dp8"
     tools:context=".ui.activities.CreateNoteActivity">
 
-    <View
-        android:id="@+id/center"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp1"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
+    <!--    <View-->
+    <!--        android:id="@+id/center"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="@dimen/dp1"-->
+    <!--        app:layout_constraintTop_toTopOf="parent"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"/>-->
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/create_note_toolbar"
@@ -24,63 +23,100 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-          android:layout_width="match_parent"
-          android:layout_height="match_parent">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <ImageView
-              android:id="@+id/back_btn"
-              android:layout_width="wrap_content"
-              app:layout_constraintTop_toTopOf="parent"
-              app:layout_constraintBottom_toBottomOf="parent"
-              app:layout_constraintStart_toStartOf="parent"
-              android:layout_height="wrap_content"
-              android:src="@drawable/ic_baseline_back_arrow_24"
-              android:contentDescription="@string/black" />
+                android:id="@+id/back_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/black"
+                android:src="@drawable/ic_baseline_back_arrow_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
-              android:id="@+id/title_note"
-              android:layout_width="@dimen/dp0"
-              android:layout_height="match_parent"
-              android:textStyle="bold"
-              style="@style/editTextBackGround"
-              android:paddingTop="@dimen/sp12"
-              android:layout_marginStart="@dimen/dp8"
-              android:textSize="@dimen/sp24"
-              android:hint="@string/enter_your_note_title"
-              android:importantForAutofill="no"
-              app:layout_constraintStart_toEndOf="@id/back_btn"
-              app:layout_constraintEnd_toEndOf="parent"
-              android:inputType="text" />
+                android:id="@+id/title_note"
+                style="@style/editTextBackGround"
+                android:layout_width="@dimen/dp0"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/dp8"
+                android:hint="@string/enter_your_note_title"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:paddingTop="@dimen/sp12"
+                android:textSize="@dimen/sp24"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/back_btn" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.appcompat.widget.Toolbar>
 
-    <EditText
-        android:id="@+id/body_note"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp0"
-        android:textSize="@dimen/sp20"
-        android:paddingHorizontal="@dimen/dp16"
-        android:paddingVertical="@dimen/dp8"
-        style="@style/editTextBackGround"
-        android:layout_marginTop="@dimen/dp15"
-        android:hint="@string/enter_your_text_here"
-        android:background="@color/white"
-        android:gravity="top|start"
-        android:inputType="textMultiLine"
+        app:layout_constraintBottom_toTopOf="@id/new_button"
         app:layout_constraintTop_toBottomOf="@id/create_note_toolbar"
-        app:layout_constraintBottom_toTopOf="@id/center"
-        android:importantForAutofill="no" />
+        tools:ignore="ScrollViewCount">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/body_note"
+            style="@style/editTextBackGround"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp15"
+            android:background="@color/white"
+            android:gravity="top|start"
+            android:hint="@string/enter_your_text_here"
+            android:importantForAutofill="no"
+            android:inputType="textMultiLine"
+            android:paddingHorizontal="@dimen/dp16"
+            android:paddingVertical="@dimen/dp8"
+            android:textSize="@dimen/sp20"
+            app:layout_constraintTop_toBottomOf="@id/create_note_toolbar" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/add_recycler_images"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/dp12"
+            android:layout_height="110dp"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+    </LinearLayout>
+
+
+    </androidx.core.widget.NestedScrollView>
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/new_button"
+        style="@style/fBA"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/dp12"
-        style="@style/fBA"
+        android:contentDescription="@string/add_new_note"
         android:src="@drawable/ic_baseline_save_24"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:contentDescription="@string/add_new_note" />
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/new_image"
+        style="@style/fBA"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp12"
+        android:contentDescription="@string/add_new_note"
+        android:src="@drawable/ic_baseline_camera_alt_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/new_button" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

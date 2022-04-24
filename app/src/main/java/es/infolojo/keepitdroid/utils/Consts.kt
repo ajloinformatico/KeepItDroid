@@ -8,3 +8,5 @@ const val NOTE_BODY = "content"
 const val NOTE_COLOR = "color"
 const val NOTE_KEY = "key"
 const val NOTE_EDIT_SUCCESS = "The note has been updated correctly !"
+const val SELECT_ACTIVITY_IMAGE = 1
+const val TAKE_ACTIVITY_IMAGE = 2

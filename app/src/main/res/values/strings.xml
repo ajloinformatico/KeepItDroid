@@ -29,5 +29,6 @@
   <string name="edit">Edit</string>
   <string name="delete">Delete</string>
   <string name="opciones_de_la_nota">Opciones de la nota</string>
-  <dimen name="sp20">20sp</dimen>
+    <string name="image_added_to_note">Image added to note</string>
+    <dimen name="sp20">20sp</dimen>
 </resources>

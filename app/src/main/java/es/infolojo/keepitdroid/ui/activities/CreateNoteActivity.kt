@@ -1,11 +1,16 @@
 package es.infolojo.keepitdroid.ui.activities
 
+import android.content.ContentValues
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -16,6 +21,8 @@ import es.infolojo.keepitdroid.data.FireBaseColors
 import es.infolojo.keepitdroid.data.FireBaseModel
 import es.infolojo.keepitdroid.data.vo.SAVE_NOTE_STATE_VO
 import es.infolojo.keepitdroid.databinding.ActivityCreateNoteBinding
+import es.infolojo.keepitdroid.ui.adapters.NoteAddImageAdapter
+import es.infolojo.keepitdroid.ui.adapters.NotesListener
 import es.infolojo.keepitdroid.ui.viewmodels.NotesViewModel
 import es.infolojo.keepitdroid.utils.*
 import timber.log.Timber
@@ -28,10 +35,19 @@ class CreateNoteActivity : AppCompatActivity() {
   private var firebaseUser: FirebaseUser? = null
   private var fireBaseStore: FirebaseFirestore? = null
   private var menuOptions: Menu? = null
+  private val notesImagesAdapter: NoteAddImageAdapter by lazy { NoteAddImageAdapter(::notesListener) }
+  private val imageAdapterLayoutManager =
+    LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
   //EditNoteData
   private var noteContent: FireBaseModel? = null
   private var id: String? = null
+
+  //Images
+  private var imageUrl: Uri? = null
+  private val contentValues by lazy {
+    ContentValues()
+  }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -41,6 +57,7 @@ class CreateNoteActivity : AppCompatActivity() {
     configureNewToolbar()
     initFireBase()
     initViewModel()
+    initNotesImagesAdapter()
     initViews()
 
     //LifeSate to set color
@@ -61,7 +78,7 @@ class CreateNoteActivity : AppCompatActivity() {
           color.toIntColor()
         )
 
-        binding.titleNote.setBackgroundColor(backGroundColor)
+        binding.root.setBackgroundColor(backGroundColor)
         binding.createNoteToolbar.setBackgroundColor(backGroundColor)
         binding.bodyNote.setBackgroundColor(backGroundColor)
 
@@ -82,7 +99,7 @@ class CreateNoteActivity : AppCompatActivity() {
   override fun onCreateOptionsMenu(menu: Menu): Boolean {
     menuOptions = menu
     menuInflater.inflate(R.menu.create_note_menu, menuOptions)
-    updateMenuDynamic(menuOptions!!, noteContent?.color?.toIntColor()?: R.color.black)
+    updateMenuDynamic(menuOptions!!, noteContent?.color?.toIntColor() ?: R.color.black)
     return true
   }
 
@@ -138,6 +155,12 @@ class CreateNoteActivity : AppCompatActivity() {
     }
   }
 
+  /** Configure the adapter to add new images*/
+  private fun initNotesImagesAdapter() {
+    binding.addRecyclerImages.layoutManager = imageAdapterLayoutManager
+    binding.addRecyclerImages.adapter = notesImagesAdapter
+  }
+
   /**Check if come from detail to set the note color or default*/
   private fun setNoteColor() {
     if (noteContent != null && noteContent?.color != null) {
@@ -157,68 +180,15 @@ class CreateNoteActivity : AppCompatActivity() {
     val needToUpdateNote = setEditNoteData()
 
 
+    //note save note
     binding.newButton.setOnClickListener {
-      val title = binding.titleNote.text.toString()
-      val noteBody = binding.bodyNote.text.toString()
-      hideKeyBoard()
+      saveNote(needToUpdateNote)
+    }
 
-      viewModel.saveDataNote(title, noteBody)
-      when (viewModel.checkDataBeforeCreate()) {
-        SAVE_NOTE_STATE_VO.NOTE_SAVE -> {
-
-          if (firebaseUser != null && fireBaseStore != null) {
-            val documentReference =
-              fireBaseStore!!.collection(FIRE_BASE_COLLECTION_NAME)
-                .document(firebaseUser!!.uid)
-                .collection(FIRE_BASE_USER_COLLECTION)
-                .document()
-
-            val dataToSave = mapOf(
-              NOTE_TITLE to title,
-              NOTE_BODY to noteBody,
-              NOTE_COLOR to viewModel.getNoteColor(),
-            )
-            //Create new note
-            if (needToUpdateNote.not()) {
-              createNewNote(documentReference, dataToSave, SAVE_NOTE_STATE_VO.NOTE_SAVE.data)
-            // Edit actual note
-            } else {
-              deleteNote(title, dataToSave)
-            }
-
-          } else {
-            Timber.d("Error: FireBase data is null")
-            showLastOnCreateNoteError()
-          }
-        }
-
-        SAVE_NOTE_STATE_VO.TITLE_ERROR -> {
-          showError(
-            this,
-            binding.root,
-            SAVE_NOTE_STATE_VO.TITLE_ERROR.data,
-            Snackbar.LENGTH_LONG
-          )
-        }
-
-        SAVE_NOTE_STATE_VO.BODY_ERROR -> {
-          showError(
-            this,
-            binding.root,
-            SAVE_NOTE_STATE_VO.BODY_ERROR.data,
-            Snackbar.LENGTH_LONG
-          )
-        }
-
-        SAVE_NOTE_STATE_VO.GLOBAL_ERROR -> {
-          showError(
-            this,
-            binding.root,
-            SAVE_NOTE_STATE_VO.GLOBAL_ERROR.data,
-            Snackbar.LENGTH_LONG
-          )
-        }
-      }
+    //Add image
+    binding.newImage.setOnClickListener {
+      //TODO
+      showMessage(this, "Add image", Toast.LENGTH_LONG)
     }
   }
 
@@ -253,14 +223,14 @@ class CreateNoteActivity : AppCompatActivity() {
   }
 
   private fun setEditNoteData(): Boolean = if (id.orEmpty().isNotEmpty() && noteContent != null) {
-      binding.titleNote.text.clear()
-      binding.bodyNote.text.clear()
-      binding.titleNote.text.append(noteContent?.title)
-      binding.bodyNote.text.append(noteContent?.content)
-      true
-    } else {
-      false
-    }
+    binding.titleNote.text.clear()
+    binding.bodyNote.text.clear()
+    binding.titleNote.text.append(noteContent?.title)
+    binding.bodyNote.text.append(noteContent?.content)
+    true
+  } else {
+    false
+  }
 
   private fun deleteNote(
     noteTitle: String,
@@ -270,7 +240,8 @@ class CreateNoteActivity : AppCompatActivity() {
       fireBaseStore?.let { fStore ->
         firebaseUser?.let { fUser ->
           val documentReference: DocumentReference = fStore.collection(
-            FIRE_BASE_COLLECTION_NAME)
+            FIRE_BASE_COLLECTION_NAME
+          )
             .document(fUser.uid)
             .collection(FIRE_BASE_USER_COLLECTION)
             .document(id.orEmpty())
@@ -280,10 +251,79 @@ class CreateNoteActivity : AppCompatActivity() {
             createNewNote(documentReference, dataToSave, NOTE_EDIT_SUCCESS)
 
           }.addOnFailureListener {
-            showError(this, binding.root, "Something was wrong, please try again", Snackbar.LENGTH_LONG)
+            showError(
+              this,
+              binding.root,
+              "Something was wrong, please try again",
+              Snackbar.LENGTH_LONG
+            )
             Timber.d("Something was wrong, please try again")
           }
         }
+      }
+    }
+  }
+
+  private fun saveNote(needToUpdateNote: Boolean) {
+    val title = binding.titleNote.text.toString()
+    val noteBody = binding.bodyNote.text.toString()
+    hideKeyBoard()
+
+    viewModel.saveDataNote(title, noteBody)
+    when (viewModel.checkDataBeforeCreate()) {
+      SAVE_NOTE_STATE_VO.NOTE_SAVE -> {
+
+        if (firebaseUser != null && fireBaseStore != null) {
+          val documentReference =
+            fireBaseStore!!.collection(FIRE_BASE_COLLECTION_NAME)
+              .document(firebaseUser!!.uid)
+              .collection(FIRE_BASE_USER_COLLECTION)
+              .document()
+
+          val dataToSave = mapOf(
+            NOTE_TITLE to title,
+            NOTE_BODY to noteBody,
+            NOTE_COLOR to viewModel.getNoteColor(),
+          )
+          //Create new note
+          if (needToUpdateNote.not()) {
+            createNewNote(documentReference, dataToSave, SAVE_NOTE_STATE_VO.NOTE_SAVE.data)
+            // Edit actual note
+          } else {
+            deleteNote(title, dataToSave)
+          }
+
+        } else {
+          Timber.d("Error: FireBase data is null")
+          showLastOnCreateNoteError()
+        }
+      }
+
+      SAVE_NOTE_STATE_VO.TITLE_ERROR -> {
+        showError(
+          this,
+          binding.root,
+          SAVE_NOTE_STATE_VO.TITLE_ERROR.data,
+          Snackbar.LENGTH_LONG
+        )
+      }
+
+      SAVE_NOTE_STATE_VO.BODY_ERROR -> {
+        showError(
+          this,
+          binding.root,
+          SAVE_NOTE_STATE_VO.BODY_ERROR.data,
+          Snackbar.LENGTH_LONG
+        )
+      }
+
+      SAVE_NOTE_STATE_VO.GLOBAL_ERROR -> {
+        showError(
+          this,
+          binding.root,
+          SAVE_NOTE_STATE_VO.GLOBAL_ERROR.data,
+          Snackbar.LENGTH_LONG
+        )
       }
     }
   }
@@ -298,4 +338,37 @@ class CreateNoteActivity : AppCompatActivity() {
     initFireBase()
   }
 
+  private fun notesListener(listener: NotesListener) {
+    if (listener is NotesListener.DeleteAction) {
+      //TODO
+      showMessage(this, "Delete image", Toast.LENGTH_LONG)
+    }
+  }
+
+  /** Init gallery intent  */
+  private fun openGallery() {
+    val intentGallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+    startActivityForResult(intentGallery, SELECT_ACTIVITY_IMAGE)
+  }
+
+  /** init intent for camera intent */
+  private fun openCamera() {
+    contentValues.put(MediaStore.Images.Media.TITLE, "")
+    contentValues.put(MediaStore.Images.Media.DESCRIPTION, "")
+
+    imageUrl = this.contentResolver?.insert(
+      MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues
+    )
+
+    if (imageUrl != null) {
+      imageUrl?.let {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, it)
+        startActivityForResult(intent, TAKE_ACTIVITY_IMAGE)
+      }
+
+    } else {
+      showError(this, binding.root,"Something was wrong opening camera", Snackbar.LENGTH_LONG)
+    }
+  }
 }
