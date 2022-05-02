@@ -1,5 +1,6 @@
 package es.infolojo.keepitdroid.ui.adapters
 
+import android.media.Image
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +19,7 @@ class NoteAddImageAdapter(private val listener: (NotesListener) -> Unit) : ListA
         viewType: Int
     ): NoteAddImageAdapterViewHolder {
         val view: View = LayoutInflater.from(parent.context)
-            .inflate(R.layout.row_note_layout, parent, false)
+            .inflate(R.layout.image_row, parent, false)
         return NoteAddImageAdapterViewHolder(view)
     }
 
@@ -28,13 +29,9 @@ class NoteAddImageAdapter(private val listener: (NotesListener) -> Unit) : ListA
     }
 
     class NoteAddImageAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val imagePreview: ImageView = itemView.findViewById(R.id.image)
-        private val deleteImage: ImageView = itemView.findViewById(R.id.delete_icon)
-
-
         fun bind(uriImage: Uri, listener: (NotesListener) -> Unit) {
-            imagePreview.setImageURI(uriImage)
-            deleteImage.setOnClickListener {
+            (itemView.findViewById(R.id.image) as ImageView).setImageURI(uriImage)
+            (itemView.findViewById(R.id.delete_icon) as ImageView).setOnClickListener {
                 listener(
                     NotesListener.DeleteImageAction(
                         position = layoutPosition

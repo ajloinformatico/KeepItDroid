@@ -60,37 +60,38 @@
         app:layout_constraintBottom_toTopOf="@id/new_button"
         app:layout_constraintTop_toBottomOf="@id/create_note_toolbar"
         tools:ignore="ScrollViewCount">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/body_note"
-            style="@style/editTextBackGround"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp15"
-            android:background="@color/white"
-            android:gravity="top|start"
-            android:hint="@string/enter_your_text_here"
-            android:importantForAutofill="no"
-            android:inputType="textMultiLine"
-            android:paddingHorizontal="@dimen/dp16"
-            android:paddingVertical="@dimen/dp8"
-            android:textSize="@dimen/sp20"
-            app:layout_constraintTop_toBottomOf="@id/create_note_toolbar" />
+            <EditText
+                android:id="@+id/body_note"
+                style="@style/editTextBackGround"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp15"
+                android:background="@color/white"
+                android:gravity="top|start"
+                android:hint="@string/enter_your_text_here"
+                android:importantForAutofill="no"
+                android:inputType="textMultiLine"
+                android:paddingHorizontal="@dimen/dp16"
+                android:paddingVertical="@dimen/dp8"
+                android:textSize="@dimen/sp20"
+                app:layout_constraintTop_toBottomOf="@id/create_note_toolbar" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/add_recycler_images"
-            android:layout_width="match_parent"
-            android:layout_marginTop="@dimen/dp12"
-            android:layout_height="110dp"
-            android:orientation="horizontal"
-            android:visibility="gone"
-            tools:visibility="visible" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/add_recycler_images"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:layout_marginTop="@dimen/dp12"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                tools:visibility="visible" />
 
-    </LinearLayout>
+        </LinearLayout>
 
 
     </androidx.core.widget.NestedScrollView>

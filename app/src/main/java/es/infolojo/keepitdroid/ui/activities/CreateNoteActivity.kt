@@ -1,5 +1,7 @@
 package es.infolojo.keepitdroid.ui.activities
 
+import android.app.Activity
+import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.Intent
 import android.net.Uri
@@ -7,6 +9,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -159,7 +162,13 @@ class CreateNoteActivity : AppCompatActivity() {
   private fun initNotesImagesAdapter() {
     binding.addRecyclerImages.layoutManager = imageAdapterLayoutManager
     binding.addRecyclerImages.adapter = notesImagesAdapter
+    viewModel.firstImage()
+    viewModel.getImageList().observe(this) {
+      notesImagesAdapter.submitList(it)
+      binding.addRecyclerImages.visibility = View.VISIBLE
+    }
   }
+
 
   /**Check if come from detail to set the note color or default*/
   private fun setNoteColor() {
@@ -187,12 +196,25 @@ class CreateNoteActivity : AppCompatActivity() {
 
     //Add image
     binding.newImage.setOnClickListener {
-      //TODO
-      showMessage(this, "Add image", Toast.LENGTH_LONG)
+      openNewImageOptions()
     }
   }
 
-  private fun createNewNote(
+  /** Show dialog to open gallery or camera**/
+  private fun openNewImageOptions() {
+    AlertDialog.Builder(this).apply {
+      this.setMessage("How do you wan to upload")
+        .setTitle("Uploader options")
+        .setPositiveButton("Camera") { _, _ ->
+          openCamera()
+        }
+        .setNegativeButton("Gallery") {_, _ ->
+          openGallery()
+        }
+    }.create().show()
+  }
+
+  private fun saveNewNote(
     documentReference: DocumentReference,
     dataToSave: Map<String, Any>,
     message: String,
@@ -248,7 +270,7 @@ class CreateNoteActivity : AppCompatActivity() {
 
           documentReference.delete().addOnSuccessListener {
             Timber.d("$noteTitle has been deleted")
-            createNewNote(documentReference, dataToSave, NOTE_EDIT_SUCCESS)
+            saveNewNote(documentReference, dataToSave, NOTE_EDIT_SUCCESS)
 
           }.addOnFailureListener {
             showError(
@@ -287,7 +309,7 @@ class CreateNoteActivity : AppCompatActivity() {
           )
           //Create new note
           if (needToUpdateNote.not()) {
-            createNewNote(documentReference, dataToSave, SAVE_NOTE_STATE_VO.NOTE_SAVE.data)
+            saveNewNote(documentReference, dataToSave, SAVE_NOTE_STATE_VO.NOTE_SAVE.data)
             // Edit actual note
           } else {
             deleteNote(title, dataToSave)
@@ -339,7 +361,7 @@ class CreateNoteActivity : AppCompatActivity() {
   }
 
   private fun notesListener(listener: NotesListener) {
-    if (listener is NotesListener.DeleteAction) {
+    if (listener is NotesListener.DeleteImageAction) {
       //TODO
       showMessage(this, "Delete image", Toast.LENGTH_LONG)
     }
@@ -371,4 +393,26 @@ class CreateNoteActivity : AppCompatActivity() {
       showError(this, binding.root,"Something was wrong opening camera", Snackbar.LENGTH_LONG)
     }
   }
+
+  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    super.onActivityResult(requestCode, resultCode, data)
+    when {
+      requestCode == SELECT_ACTIVITY_IMAGE && resultCode == Activity.RESULT_OK -> {
+        data?.let {
+          imageUrl = it.data
+          imageUrl?.let { imageUri ->
+            viewModel.addNewImage(imageUri)
+          }
+        }
+      }
+
+      requestCode == TAKE_ACTIVITY_IMAGE && resultCode == Activity.RESULT_OK -> {
+        imageUrl?.let { imageUri ->
+          viewModel.addNewImage(imageUri)
+        }
+      }
+    }
+  }
+
+
 }

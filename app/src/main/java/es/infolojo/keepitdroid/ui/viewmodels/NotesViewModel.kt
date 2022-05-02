@@ -1,5 +1,6 @@
 package es.infolojo.keepitdroid.ui.viewmodels
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -27,6 +28,9 @@ class NotesViewModel: ViewModel() {
 
     val isDuplicated: LiveData<Boolean>
         get() = _isDuplicated
+
+    private val imagesList = MutableLiveData<List<Uri>>()
+    fun getImageList(): LiveData<List<Uri>> = imagesList
 
     init {
         _noteColor.postValue(FireBaseColors.WHITE_NOTE)
@@ -77,4 +81,26 @@ class NotesViewModel: ViewModel() {
             }
         }
     }
+
+    //Images
+    /** Add images */
+    fun addNewImage(uri: Uri){
+        val newImagesList: MutableList<Uri> = mutableListOf()
+        newImagesList.addAll(imagesList.value.orEmpty()).also {
+            newImagesList.add(uri)
+        }
+        this.imagesList.value = newImagesList
+    }
+
+    /** Delete an image */
+    fun deleteImage(position: Int){
+        val newImageList: MutableList<Uri> = mutableListOf()
+        newImageList.addAll(imagesList.value.orEmpty())
+        newImageList.removeAt(position)
+        this.imagesList.value = newImageList
+    }
+
+    /** First insert */
+    fun firstImage() = this.addNewImage(Uri.EMPTY)
+
 }
